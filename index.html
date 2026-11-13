@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BULLET TRAIN SONG SORT｜超特急 楽曲ソート</title>
+<style>
+:root{--pink:#e879a9;--pink-dark:#c83f7e;--blue:#5b8ee6;--ink:#272435;--muted:#777487;--paper:#fffafd;--line:#f1d9e6}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#fff5fa,#f4f7ff);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:var(--ink)}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 44px}.brand{text-align:center;font-size:.78rem;letter-spacing:.22em;color:var(--pink-dark);font-weight:800}
+h1{text-align:center;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.2;margin:10px 0 8px}.sub{text-align:center;color:var(--muted);font-size:.92rem;margin:0 0 22px}
+.panel{background:#ffffffdb;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 10px 32px #d98bb21a}
+.progressline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.82rem;margin-bottom:10px}.track{height:8px;border-radius:20px;background:#f5e6ef;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .25s}
+.question{text-align:center;font-weight:800;font-size:1.1rem;margin:24px 0 16px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.song{border:2px solid transparent;border-radius:18px;padding:16px 12px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:transform .15s,border-color .15s;background:#fce7f3;color:#9d174d;font:inherit;font-weight:750}.song:nth-child(2){background:#e4efff;color:#1d4ed8}.song:hover{transform:translateY(-3px);border-color:#fff}.song:active{transform:scale(.98)}.disc{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 8%,#f8b9d7 9% 12%,#f2a4ca 13% 35%,#d977a9 36% 39%,#f8cbe1 40% 100%);box-shadow:0 4px 10px #b66b921f}.song:nth-child(2) .disc{background:radial-gradient(circle,#fff 0 8%,#a9c9ff 9% 12%,#82aff6 13% 35%,#4c7fcf 36% 39%,#cfe1ff 40% 100%)}.disc span{font-size:1.15rem;color:#fff;text-shadow:0 1px 3px #555}
+.foot{text-align:center;font-size:.75rem;color:var(--muted);margin:14px 0 0}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}button.secondary{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 16px;color:var(--muted);font:inherit;cursor:pointer}
+#result{display:none}#result h2{text-align:center;margin:0 0 12px}.rank{display:flex;gap:12px;align-items:center;padding:11px 12px;border-bottom:1px solid #f3e3ec}.rank:last-child{border:0}.num{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#fce7f3;color:#a21caf;font-weight:900}.rank:nth-child(2) .num{background:#fff1c9;color:#9a6700}.rank:nth-child(3) .num{background:#e8eaff;color:#4f46e5}.rankname{font-weight:700;flex:1}.hint{background:#fff4fa;border-radius:14px;padding:12px;font-size:.83rem;color:#8d4168;margin:12px 0}
+@media(max-width:420px){.wrap{padding:18px 12px}.panel{padding:14px}.song{min-height:150px;padding:12px 7px;font-size:.92rem}.disc{width:62px;height:62px}}
+
+/* ★ メンバーカラー9色を並べるラインのスタイル */
+.member-color-line {
+  height: 6px;
+  width: 100%;
+  border-radius: 3px;
+  margin: 16px 0 24px 0;
+  background: linear-gradient(
+    to right,
+    #0000FE 0%,   #0000FE 11.11%,
+    #973095 11.11%, #973095 22.22%,
+    #009345 22.22%, #009345 33.33%,
+    #FE0000 33.33%, #FE0000 44.44%,
+    #ffffff 44.44%, #ffffff 55.55%,
+    #4B444C 55.55%, #4B444C 66.66%,
+    #4F2703 66.66%, #4F2703 77.77%,
+    #3EC9B6 77.77%, #3EC9B6 88.88%,
+    #EF7800 88.88%, #EF7800 100%
+  );
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.panel{background:#ffffffdb;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 10px 32px #d98bb21a}
+.progressline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.82rem;margin-bottom:10px}.track{height:8px;border-radius:20px;background:#f5e6ef;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .25s}
+.question{text-align:center;font-weight:800;font-size:1.1rem;margin:24px 0 16px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.song{border:2px solid transparent;border-radius:18px;padding:16px 12px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:transform .15s,border-color .15s;background:#fce7f3;color:#9d174d;font:inherit;font-weight:750}.song:nth-child(2){background:#e4efff;color:#1d4ed8}.song:hover{transform:translateY(-3px);border-color:#fff}.song:active{transform:scale(.98)}.disc{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 8%,#f8b9d7 9% 12%,#f2a4ca 13% 35%,#d977a9 36% 39%,#f8cbe1 40% 100%);box-shadow:0 4px 10px #b66b921f}.song:nth-child(2) .disc{background:radial-gradient(circle,#fff 0 8%,#a9c9ff 9% 12%,#82aff6 13% 35%,#4c7fcf 36% 39%,#cfe1ff 40% 100%)}.disc span{font-size:1.15rem;color:#fff;text-shadow:0 1px 3px #555}
+.foot{text-align:center;font-size:.75rem;color:var(--muted);margin:14px 0 0}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}button.secondary{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 16px;color:var(--muted);font:inherit;cursor:pointer}
+#result{display:none}#result h2{text-align:center;margin:0 0 12px}.rank{display:flex;gap:12px;align-items:center;padding:11px 12px;border-bottom:1px solid #f3e3ec}.rank:last-child{border:0}.num{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#fce7f3;color:#a21caf;font-weight:900}.rank:nth-child(2) .num{background:#fff1c9;color:#9a6700}.rank:nth-child(3) .num{background:#e8eaff;color:#4f46e5}.rankname{font-weight:700;flex:1}
+@media(max-width:420px){.wrap{padding:18px 12px}.panel{padding:14px}.song{min-height:150px;padding:12px 7px;font-size:.92rem}.disc{width:62px;height:62px}}
+</style>
+</head>
+
+<section class="panel" id="intro">
+<div class="member-color-line"></div>
+<h2 style="text-align:center;font-size:1.5rem;margin:12px 0">超特急 楽曲ソートへようこそ！</h2>
+<p style="text-align:center;color:var(--muted);margin:0 0 18px">二択で選んで、あなたの好きな超特急の楽曲ランキングを作ろう🚄</p>
+<div class="hint" style="color:#7d4262">
+<strong>遊び方・注意事項</strong>
+<ul style="padding-left:1.25rem;line-height:1.8;margin:8px 0 0">
+<li>表示された2曲のうち、より好きな曲を選んでください。</li>
+<li>選択を重ねると、好きな曲順にランキングが完成します。</li>
+<li>「ひとつ戻る」で直前の選択をやり直せます。</li>
+<li>1つの曲で複数verがある場合、区別せず1曲として登録しています。</li>
+<li>ランキングが表示されるまで20分程度かかります。</li>
+<li>このサイトはファン制作の非公式サイトです。グループおよび所属事務所とは一切関係ありません。</li>
+</ul>
+</div>
+<div style="text-align:center;margin-top:18px">
+<form action="songs.html" method="get">
+<button id="startButton" style="border:0;border-radius:999px;background:linear-gradient(90deg,var(--pink-dark),var(--blue));color:white;font-weight:800;font-size:1.05rem;padding:14px 34px;cursor:pointer;box-shadow:0 6px 18px #FFFFFF">ソートをスタート！</button></div>
+</form>
+</section>
