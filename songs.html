@@ -209,7 +209,7 @@ function showResult(){
   document.getElementById('result').style.display = 'block';
   
   document.getElementById('ranking').innerHTML = topList.map((s, i) => 
-    <div class="rank"><div class="num">${i+1}</div><div class="rankname">${escapeHTML(s)}</div></div>
+  `<div class="rank"><div class="num">${i+1}</div><div class="rankname">${escapeHTML(s)}</div></div>`
   ).join('');
 }
 
