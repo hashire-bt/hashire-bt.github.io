@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BULLET TRAIN SONG SORT｜超特急 楽曲ソート</title>
+<style>
+:root{--pink:#e879a9;--pink-dark:#c83f7e;--blue:#5b8ee6;--ink:#272435;--muted:#777487;--paper:#fffafd;--line:#f1d9e6}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#fff5fa,#f4f7ff);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:var(--ink)}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 44px}.brand{text-align:center;font-size:.78rem;letter-spacing:.22em;color:var(--pink-dark);font-weight:800}
+h1{text-align:center;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.2;margin:10px 0 8px}.sub{text-align:center;color:var(--muted);font-size:.92rem;margin:0 0 22px}
+
+/* メンバーカラー9色を並べるラインのスタイル */
+.member-color-line {
+  height: 6px;
+  width: 100%;
+  border-radius: 3px;
+  margin: 16px 0 24px 0;
+  background: linear-gradient(
+    to right,
+    #0000FE 0%,   #0000FE 11.11%,
+    #973095 11.11%, #973095 22.22%,
+    #009345 22.22%, #009345 33.33%,
+    #FE0000 33.33%, #FE0000 44.44%,
+    #ffffff 44.44%, #ffffff 55.55%,
+    #4B444C 55.55%, #4B444C 66.66%,
+    #4F2703 66.66%, #4F2703 77.77%,
+    #3EC9B6 77.77%, #3EC9B6 88.88%,
+    #EF7800 88.88%, #EF7800 100%
+  );
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.panel{background:#ffffffdb;border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 10px 32px #d98bb21a}
+.progressline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.82rem;margin-bottom:10px}.track{height:8px;border-radius:20px;background:#f5e6ef;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .25s}
+.question{text-align:center;font-weight:800;font-size:1.1rem;margin:24px 0 16px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.song{border:2px solid transparent;border-radius:18px;padding:16px 12px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:transform .15s,border-color .15s;background:#fce7f3;color:#9d174d;font:inherit;font-weight:750}.song:nth-child(2){background:#e4efff;color:#1d4ed8}.song:hover{transform:translateY(-3px);border-color:#fff}.song:active{transform:scale(.98)}.disc{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 8%,#f8b9d7 9% 12%,#f2a4ca 13% 35%,#d977a9 36% 39%,#f8cbe1 40% 100%);box-shadow:0 4px 10px #b66b921f}.song:nth-child(2) .disc{background:radial-gradient(circle,#fff 0 8%,#a9c9ff 9% 12%,#82aff6 13% 35%,#4c7fcf 36% 39%,#cfe1ff 40% 100%)}.disc span{font-size:1.15rem;color:#fff;text-shadow:0 1px 3px #555}
+.foot{text-align:center;font-size:.75rem;color:var(--muted);margin:14px 0 0}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}button.secondary{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 16px;color:var(--muted);font:inherit;cursor:pointer}
+#result{display:none}#result h2{text-align:center;margin:0 0 12px}.rank{display:flex;gap:12px;align-items:center;padding:11px 12px;border-bottom:1px solid #f3e3ec}.rank:last-child{border:0}.num{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#fce7f3;color:#a21caf;font-weight:900}.rank:nth-child(1) .num{background:#fce7f3;color:#FE0000}.rankname{font-weight:700;flex:1}.rank:nth-child(2) .num{background:#fce7f3;color:#9a6700}.rank:nth-child(3) .num{background:#fce7f3;color:#4f46e5}.rankname{font-weight:700;flex:1}
+@media(max-width:420px){.wrap{padding:18px 12px}.panel{padding:14px}.song{min-height:150px;padding:12px 7px;font-size:.92rem}.disc{width:62px;height:62px}}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <h1>超特急 楽曲ソート</h1>
+  <p class="sub">あなたの好きな超特急の楽曲ランキングを作ろう！🚄</p>
+  
+  <div class="member-color-line"></div>
+
+  <section class="panel" id="sortPanel">
+    <div class="progressline"><span id="count">発車！</span><span id="remaining">楽曲をソートしよう</span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="question" id="question">どちらの曲が好き？</div>
+    <div class="pair" id="pair"></div>
+    <p class="foot">直感で選んでね！</p>
+    <div class="actions">
+      <button class="secondary" id="undo" disabled>ひとつ戻る</button>
+      <button class="secondary" id="restart">最初からやり直す</button>
+    </div>
+  </section>
+
+  <section class="panel" id="result">
+    <h2>🏆 あなたの超特急楽曲ランキング（上位10曲）</h2>
+    <div id="ranking"></div>
+    <div class="actions">
+      <button class="secondary" id="share">ランキングをコピー</button>
+      <button class="secondary" id="again">もう一度ソートする</button>
+    </div>
+  </section>
+</main>
+
+<script src="songs.js"></script>
+<script>
+let shuffledSongs = [];
+let currentIndex = 0;
+let topList = []; // 最大10曲の暫定トップリスト
+let comparisons = 0;
+let history = [];
+
+let targetSong = null;
+let stepType = ''; // 'THRESHOLD' (10位と比較) または 'BINARY' (二分探索)
+let low = 0, high = 0, mid = 0;
+let leftSong = null, rightSong = null;
+
+// シャッフル関数
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function initialize(){
+  shuffledSongs = shuffleArray(songs);
+  currentIndex = 0;
+  topList = [];
+  comparisons = 0;
+  history = [];
+  
+  document.getElementById('sortPanel').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  
+  if(shuffledSongs.length === 0){
+    showResult();
+    return;
+  }
+  
+  // 最初の1曲目を無条件でトップリストに入れる
+  topList.push(shuffledSongs[0]);
+  currentIndex = 1;
+  prepareNextInsertion();
+}
+
+function prepareNextInsertion(){
+  if(currentIndex >= shuffledSongs.length){
+    showResult();
+    return;
+  }
+  targetSong = shuffledSongs[currentIndex];
+
+  if(topList.length < 10){
+    // トップ10がまだ埋まっていない場合、現在のトップリスト内で二分探索
+    stepType = 'BINARY';
+    low = 0;
+    high = topList.length - 1;
+    nextStep();
+  } else {
+    // トップ10が埋まっている場合、まず10位（最下位 = topList[9]）と比較
+    stepType = 'THRESHOLD';
+    nextStep();
+  }
+}
+
+function nextStep(){
+  if(stepType === 'THRESHOLD'){
+    leftSong = targetSong;
+    rightSong = topList[9]; // 現在の10位
+    render();
+  } else if(stepType === 'BINARY'){
+    if(low > high){
+      // 挿入位置決定
+      topList.splice(low, 0, targetSong);
+      if(topList.length > 10){
+        topList.pop(); // 10位より下はカット
+      }
+      currentIndex++;
+      prepareNextInsertion();
+      return;
+    }
+    mid = Math.floor((low + high) / 2);
+    leftSong = targetSong;
+    rightSong = topList[mid];
+    render();
+  }
+}
+
+function choose(winner){
+  // 履歴を保存（ひとつ戻る機能用）
+  history.push({
+    currentIndex,
+    topList: [...topList],
+    comparisons,
+    targetSong,
+    stepType,
+    low, high, mid
+  });
+
+  comparisons++;
+
+  if(stepType === 'THRESHOLD'){
+    if(winner === 0){
+      // 10位の曲より勝ったので、トップ9内での二分探索へ進む
+      stepType = 'BINARY';
+      low = 0;
+      high = topList.length - 2; // インデックス 0 〜 8
+      nextStep();
+    } else {
+      // 10位の曲に負けたので、トップ10に入らず次へスキップ
+      currentIndex++;
+      prepareNextInsertion();
+    }
+  } else if(stepType === 'BINARY'){
+    if(winner === 0){
+      // targetSong の方が上（好き）
+      high = mid - 1;
+    } else {
+      // topList[mid] の方が上（好き）
+      low = mid + 1;
+    }
+    nextStep();
+  }
+}
