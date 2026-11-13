@@ -50,11 +50,11 @@ h1{text-align:center;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.2;margin:1
   <div class="member-color-line"></div>
 
   <section class="panel" id="sortPanel">
-    <div class="progressline"><span id="count">準備OK！</span><span id="remaining">楽曲を比較しよう</span></div>
+    <div class="progressline"><span id="count">発車！</span><span id="remaining">楽曲をソートしよう</span></div>
     <div class="track"><div class="fill" id="fill"></div></div>
     <div class="question" id="question">どちらの曲が好き？</div>
     <div class="pair" id="pair"></div>
-    <p class="foot">直感で選んでね！迷ったら何度でも楽しめます 💖</p>
+    <p class="foot">直感で選んでね！</p>
     <div class="actions">
       <button class="secondary" id="undo" disabled>ひとつ戻る</button>
       <button class="secondary" id="restart">最初からやり直す</button>
@@ -192,13 +192,12 @@ function render(){
   [leftSong, rightSong].forEach((s, i) => {
     const btn = document.createElement('button');
     btn.className = 'song';
-    btn.innerHTML = `<div class="disc"><span>BT</span></div><span>${escapeHTML(s)}</span><small>この曲が好き！</small>`;
+    btn.innerHTML = `<div class="disc"></div><span>${escapeHTML(s)}</span><small>この曲が好き！</small>`;
     btn.onclick = () => choose(i);
     pair.appendChild(btn);
   });
 
   document.getElementById('question').textContent = 'どちらの曲が好き？';
-  document.getElementById('count').textContent = `比較 ${comparisons} 回`;
   document.getElementById('remaining').textContent = `進行状況: ${currentIndex} / ${shuffledSongs.length} 曲`;
   document.getElementById('fill').style.width = Math.min(100, (currentIndex / shuffledSongs.length) * 100) + '%';
   document.getElementById('undo').disabled = !history.length;
