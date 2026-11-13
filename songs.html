@@ -193,3 +193,63 @@ function choose(winner){
     nextStep();
   }
 }
+
+  function render(){
+  const pair = document.getElementById('pair');
+  pair.innerHTML = '';
+  
+  [leftSong, rightSong].forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'song';
+    btn.innerHTML = `<div class="disc"></div><span>${escapeHTML(s)}</span><small>この曲が好き！</small>`;
+    btn.onclick = () => choose(i);
+    pair.appendChild(btn);
+  });
+
+  document.getElementById('question').textContent = 'どちらの曲が好き？';
+  document.getElementById('remaining').textContent = `進行状況: ${currentIndex} / ${shuffledSongs.length} 曲`;
+  document.getElementById('fill').style.width = Math.min(100, (currentIndex / shuffledSongs.length) * 100) + '%';
+  document.getElementById('undo').disabled = !history.length;
+}
+
+function showResult(){
+  document.getElementById('sortPanel').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  
+  document.getElementById('ranking').innerHTML = topList.map((s, i) => 
+  `<div class="rank"><div class="num">${i+1}</div><div class="rankname">${escapeHTML(s)}</div></div>`
+  ).join('');
+}
+
+function undo(){
+  const h = history.pop();
+  if(!h) return;
+  currentIndex = h.currentIndex;
+  topList = [...h.topList];
+  comparisons = h.comparisons;
+  targetSong = h.targetSong;
+  stepType = h.stepType;
+  low = h.low;
+  high = h.high;
+  mid = h.mid;
+  nextStep();
+}
+
+function escapeHTML(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById('undo').onclick = undo;
+document.getElementById('restart').onclick = initialize;
+document.getElementById('again').onclick = initialize;
+document.getElementById('share').onclick = () => {
+  const list = topList.map((s, i) => `${i+1}位 ${s}`).join('\n');
+  if(navigator.clipboard) navigator.clipboard.writeText(list).then(()=>alert('ランキングをコピーしました！'));
+  else prompt('コピーしてください', list);
+};
+
+initialize();
+</script>
+
+</body>
+</html>
